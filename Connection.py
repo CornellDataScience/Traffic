@@ -4,10 +4,11 @@ class Connection:
         self.length_miles = length_miles
         self.entrance_name = entrance_name
         self.exit_name = exit_name
+        self.cars_on_road = cars_on_road
         if not self.checkInvariants(self):
             raise TypeError("Invalid constructor for Connection")
     def checkInvariants(self):
-        for car in cars_on_road:
-            if car < 0 or car > length_miles:
+        for car in self.cars_on_road:
+            if car < 0 or car > self.length_miles:
                 return False
         return True

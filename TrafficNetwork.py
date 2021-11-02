@@ -14,21 +14,21 @@ class TrafficNetwork:
             raise TypeError("Invalid constructor for Traffic Model")
     def checkInvariants(self):
         #checks that matrix is n x n.
-        for row in connection_matrix:
-            if len(row) != len(connection_matrix):
+        for row in self.connection_matrix:
+            if len(row) != len(self.connection_matrix):
                 return False
         #check that no light connects to itself
-        for index, row in enumerate(connection_matrix):
-            if row[index] != null:
+        for index, row in enumerate(self.connection_matrix):
+            if row[index] != None:
                 return False
         #check every connection
-        for row in matrix:
+        for row in self.connection_matrix:
             for connection in row:
-                if not checkConnection(connection):
+                if not self.checkConnection(connection):
                     return False
         return True
     def checkConnection(connection):
-        if connection == null:
+        if connection == None:
             return True
         #TODO: check lights have proper names once functionality is available
 

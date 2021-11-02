@@ -23,29 +23,32 @@ class TrafficLight:
             raise TypeError("Invalid constructor for Traffic Light "+name)
 
     """Ensures the state of the Traffic Flow Model follows all rules"""
-
     def checkInvariants(self):
         len_rows = len(self.name_list)
+        if not self.checkMatrixInvariants(self.traffic_matrix):
+            return False
+        # runs all checks on each traffic state matrix
+        for matrix in self.traffic_flow_matrix_list:
+            if not self.checkMatrixInvariants(matrix):
+                return False
         # Checks no two names are the same
-        if len(set(self.name_list)) != len_rows:s
+        if len(set(self.name_list)) != len_rows:
             return False
         # checks to ensure the number of timers is equal to the number of states
         if len(self.timers) == len_rows:
             return False
-        #runs all checks on the traffic data matrix
-        if not self.checkMatrixInvariants(self.traffic_matrix):
-            return False
-        #runs all checks on each traffic state matrix
-        for matrix in traffic_flow_matrix_list:
-            if not self.checkMatrixInvariants(matrix):
-                return False
-        return True
-     def checkMatrixInvariants(self, matrix) =
-     # Checks all entries are floats [0, 1] and that every row sums to exactly 1
+        else:
+            return True
+    """
+    Checks that the matrix involved follows all invariant rules
+    """
+    def checkMatrixInvariants(self, matrix):
+        # Checks all entries are floats [0, 1] and that every row sums to exactly 1
+        len_rows = len(self.name_list)
         for row in matrix:
-            rowTotal=0
+            rowTotal = 0
             for weight in row:
-                rowTotal+=weight
+                rowTotal += weight
                 if weight > 1 or weight < 0:
                     return False
             if rowTotal != 1:
@@ -77,12 +80,17 @@ class TrafficLight:
         rowIndex = self.name_list.index(from_name)
         colIndex = self.name_list.index(to_name)
         return self.traffic_matrix[rowIndex][colIndex]
-
+    """
+    Gets flow from [from_name] to [to_name]
+    """
     def get_flow_in_current_state(self, from_name, to_name):
-            rowIndex = self.name_list.index(from_name)
-            colIndex = self.name_list.index(to_name)
-            return self.traffic_flow_matrix_list[current_state][rowIndex][colIndex]
-    def has_entrance(name):
+        rowIndex = self.name_list.index(from_name)
+        colIndex = self.name_list.index(to_name)
+        return self.traffic_flow_matrix_list[self.current_state][rowIndex][colIndex]
+    """
+    Checks that the light has an entrance with the given name
+    """
+    def has_entrance(self, name):
         return name in self.name_list
 
     """
@@ -92,12 +100,12 @@ class TrafficLight:
     """
 
     def change_state(self, time_elapsed):
-        totalTime= self.elapsed_time_in_state + time_elapsed
-        while totalTime > timers[current_state]:
-            totalTime-= times[current_state]
-            if current_state < (len(timers)-1):
+        totalTime = self.elapsed_time_in_state + time_elapsed
+        while totalTime > self.timers[current_state]:
+            totalTime -= self.timers[current_state]
+            if current_state < (len(self.timers) - 1):
                 current_state += 1
             else:
                 current_state = 0
         self.time_elapsed_in_state = totalTime
-        self.current_state = stateNo
+        self.current_state = current_state
